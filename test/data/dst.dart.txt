@@ -1,0 +1,52 @@
+const _supportedLocales = const <Locale> [
+    const Locale('ru'),
+  ];
+    const Locale('en'),
+  ];
+
+class LocaleSpecificStringsDelegate extends LocalizationsDelegate<LocaleSpecificStrings>
+{
+  const LocaleSpecificStringsDelegate();
+
+  @override
+  bool isSupported(Locale locale) =>
+    ["ru","en"].contains(locale.languageCode);
+
+  get supportedLocales => _supportedLocales; // для совместимости со старым кодом (<=2020)
+
+  @override
+  Future<LocaleSpecificStrings> load(Locale locale) async
+  {
+    if (locale.languageCode=="{lang.lower()}") return {lang_to_classname(lang)}();
+    return {lang_to_classname("EN")}();
+  }
+
+  @override
+  bool shouldReload(LocaleSpecificStringsDelegate old) => false;
+}
+
+
+extension LocaleSpecificStringsBuilderExt on BuildContext
+{
+  LocaleSpecificStrings get i18n {
+    return Localizations.of<LocaleSpecificStrings>(
+      this, LocaleSpecificStrings);
+  }
+}
+
+const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
+      const LocaleSpecificStringsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate
+    ];
+
+
+// for compatibility with https://github.com/long1eu/flutter_i18n
+class S extends LocaleSpecificStrings {
+  	static LocaleSpecificStringsDelegate get delegate => localizationsDelegates[0];
+	static LocaleSpecificStrings of(BuildContext context) => context.i18n;
+	static get supportedLocales => _supportedLocales;
+}
+
+
+final supportedLocales = _supportedLocales;
