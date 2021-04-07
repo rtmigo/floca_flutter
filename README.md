@@ -44,8 +44,8 @@ Update pubspec.yaml:
 
 ``` yaml
 dependencies:
-  flutter_localizations:  # a flutter component  
-    sdk: flutter          # unrelated to floca
+  flutter_localizations:  # a flutter component unrelated to floca
+    sdk: flutter          
 
 dev_dependencies:
   floca: any
