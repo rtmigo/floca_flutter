@@ -23,9 +23,8 @@ does not allow:
 
 ``` dart
 Widget build(BuildContext context) {
-  // if a constant was not in CSV, the following is a static error, 
-  // will does not even compile:
-  var c = context.i18n.undefined;
+  // the following constant was not in CSV 
+  var c = context.i18n.undefined; // COMPILE-TIME ERROR!
   ...
 }  
 ```
