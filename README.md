@@ -23,7 +23,7 @@ does not allow:
 
 ``` dart
 Widget build(BuildContext context) {
-  // the following constant was not in CSV 
+  // the following constant was not in the spreadsheet 
   var c = context.i18n.undefined; // COMPILE-TIME ERROR!
   ...
 }  
