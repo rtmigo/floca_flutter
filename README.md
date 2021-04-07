@@ -51,12 +51,17 @@ dev_dependencies:
   floca: any
 ```
 
-Run:
+Get:
 
 ``` bash
-flutter pub get
+$ flutter pub get
 ```
 
+Check it runs:
+
+``` bash
+$ flutter pub run floca:floca --version
+```
 
 
 
