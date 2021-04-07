@@ -33,11 +33,11 @@ Widget build(BuildContext context) {
 Floca takes your `.csv` spreadsheet and generates a `.dart` file.
 ```dart
 import "newly_generated.dart";
-// adds the .i18n extension on BuildContext objects
+  // this import adds the .i18n extension on BuildContext objects
 ```
 
 
-# How to Install
+# Install
 
 Add floca to pubspec.yaml: 
 
@@ -59,7 +59,7 @@ flutter pub get
 
 
 
-# How to Use
+# Use
 
 #### 1. Create the spreadsheet
 
