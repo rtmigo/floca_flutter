@@ -9,7 +9,7 @@ Say, you have an Excel spreadsheet like this:
 
 `floca` will let you access its content like this:
 
-```dart
+``` dart
 Widget build(BuildContext context) {
   // getting the strings in proper language
   var a = context.i18n.greeting;
@@ -18,8 +18,19 @@ Widget build(BuildContext context) {
 }  
 ```
 
+Here it is important not only what Floca allows you to do, but also what it 
+does not allow:
 
-# What is does
+``` dart
+Widget build(BuildContext context) {
+  // if a constant was not in CSV, the following is a static error, 
+  // will does not even compile:
+  var c = context.i18n.undefined;
+  ...
+}  
+```
+
+# What Floca is does
 
 Floca takes your `.csv` spreadsheet and generates a `.dart` file.
 ```dart
