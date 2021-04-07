@@ -18,7 +18,8 @@ Widget build(BuildContext context) {
 }  
 ```
 
-An attempt to use nonexistent constants will be prevented at compile time:
+An attempt to use constants not specified in the spreadsheet will be prevented 
+at compile time:
 
 ``` dart
 Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ Widget build(BuildContext context) {
 }  
 ```
 
-# What Floca is does
+# What Floca does
 
 Floca takes your `.csv` spreadsheet and generates a `.dart` file.
 ```dart
