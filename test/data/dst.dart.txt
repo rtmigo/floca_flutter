@@ -1,24 +1,24 @@
-const _supportedLocales = const <Locale> [
-    const Locale('ru'),
-  ];
-    const Locale('en'),
+final supportedLocales = final <Locale>[
+    Locale.parse('en-US'),
+    Locale.parse('eo'),
+    Locale.parse('ru'),
   ];
 
-class LocaleSpecificStringsDelegate extends LocalizationsDelegate<LocaleSpecificStrings>
+class LocaleStringsDelegate extends LocalizationsDelegate<LocaleSpecificStrings>
 {
   const LocaleSpecificStringsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-    ["ru","en"].contains(locale.languageCode);
-
-  get supportedLocales => _supportedLocales; // для совместимости со старым кодом (<=2020)
+  bool isSupported(Locale locale) => supportedLocales.contains(locale);
 
   @override
   Future<LocaleSpecificStrings> load(Locale locale) async
   {
-    if (locale.languageCode=="{lang.lower()}") return {lang_to_classname(lang)}();
-    return {lang_to_classname("EN")}();
+    switch (locale.toLanguageTag()) {
+      case "eo": return LocaleStringsEo();
+      case "ru": return LocaleStringsRu();
+      default: return LocaleStringsEnUs();
+    }
   }
 
   @override
@@ -26,7 +26,7 @@ class LocaleSpecificStringsDelegate extends LocalizationsDelegate<LocaleSpecific
 }
 
 
-extension LocaleSpecificStringsBuilderExt on BuildContext
+extension BuildContextExtension on BuildContext
 {
   LocaleSpecificStrings get i18n {
     return Localizations.of<LocaleSpecificStrings>(
@@ -35,7 +35,7 @@ extension LocaleSpecificStringsBuilderExt on BuildContext
 }
 
 const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
-      const LocaleSpecificStringsDelegate(),
+      const LocaleStringsDelegate(),
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate
     ];
@@ -48,5 +48,3 @@ class S extends LocaleSpecificStrings {
 	static get supportedLocales => _supportedLocales;
 }
 
-
-final supportedLocales = _supportedLocales;

@@ -1,19 +1,12 @@
-property,ru,en
-ticking,Тиканье,Ticking
-chimes2359,Бой курантов в 23:59,Chimes at 23:59
-newYearsModeComment,Новогодний режим: 12-й удар колокола приходится на полночь,New Year's Eve mode: The 12th bell strikes at midnight
-startTest2359,Тестировать 23:59,Test 23:59
-stopTest2359,Остановить тест,Stop test
-,,
-termsOfUse,Условия использования,Terms of Use
-privacyTerms,Конфиденциальность,Privacy terms
-licenses,Авторские права,Copyrights
-syncInfo_accuracy,Часы показывают точное время ±PRECISION секунд,The clock shows exact time ±PRECISION seconds
-syncInfo_delta,Время телефона ACT на DELTA секунд,Phone time is DELTA seconds ACT
-syncInfo_time,Часы синхронизированы в PREVTIME. Следующая синхронизация в NEXTTIME,Clock was synchronized at PREVTIME. Next sync at NEXTTIME
-syncInfo_pct,Идет синхронизация: SYNCPCT,Synchronizing now: SYNCPCT
-syncInfo_never,Время не синхронизировано. Следующая синхронизация в NEXTTIME,Time is not synchronized. Next sync at NEXTTIME
-timeBehind,отстает,behind
-timeAhead,спешит,ahead
-language,Язык,Language
-rateApp,Оценить приложение,Rate the app
+property,ru # comment,en-US,# empty row,ES
+termsOfUse,,Terms of Use,ignored,
+privacyTerms,Конфиденциальность,Privacy terms,ignored,Privateca Politiko
+licenses,Авторские права,Copyrights,ignored,Kopirajta avizo
+,,,ignored,
+language,Язык,Language,ignored,Lingvo
+rateApp,Оценить приложение,Rate the app,ignored,
+withHash,# это символ решетки,# is a hash sign,ignored,# estas la krado simbolo
+,,,,
+pushedButtonTimes,Вы нажимали эту кнопку столько раз:,You have pushed the button this many times:,,Vi premis la butonon tiel multajn fojojn:
+demo,Демо,Demo,,Demo
+hello,Привет!,Hello!,,Hola!

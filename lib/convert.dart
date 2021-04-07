@@ -1,217 +1,192 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:intl/locale.dart';
 
-Iterable<Map<String,String>> dictReader(File csvFile) sync* {
+Iterable<Map<String, String>> dictReader(File csvFile) sync* {
   final rowsAsListOfValues = const CsvToListConverter().convert(csvFile.readAsStringSync(),
-      fieldDelimiter: csvFile.path.toLowerCase().endsWith('.tsv') ? '\t' : ',',
-      eol: '\n');
+      fieldDelimiter: csvFile.path.toLowerCase().endsWith('.tsv') ? '\t' : ',', eol: '\n');
   List<String>? columnNames;
 
   for (var row in rowsAsListOfValues) {
-    if (columnNames==null) {
+    if (columnNames == null) {
       columnNames = row.map((e) => e.toString()).toList();
       continue;
     }
 
-    final result = <String,String>{};
+    final result = <String, String>{};
 
-    for (int i=0; i<columnNames.length; ++i) {
-      result[columnNames[i]] = i<row.length ? row[i] : null;
+    for (int i = 0; i < columnNames.length; ++i) {
+      result[columnNames[i]] = i < row.length ? row[i] : null;
     }
 
     yield result;
   }
 }
 
-const template = '''
-SUPPORTED_LOCALES
+String beforeHash(String text) => text.split('#').first;
 
-class LocaleSpecificStringsDelegate extends LocalizationsDelegate<LocaleSpecificStrings>
-{
-  const LocaleSpecificStringsDelegate();
+class ParsedLangConstants {
+  ParsedLangConstants(File csvFile) {
+    final propertiesSet = <String>{};
 
-  @override
-  bool isSupported(Locale locale) =>
-    LOCALESLIST.contains(locale.languageCode);
+    for (var row in dictReader(csvFile)) {
+      final propertyName = beforeHash(row['property'] ?? '').trim();
+      if (propertyName.isEmpty) {
+        continue;
+      }
 
-  get supportedLocales => _supportedLocales; // для совместимости со старым кодом (<=2020)
+      for (var col in row.keys) {
+        final lang = beforeHash(col).trim().toLowerCase();
+        if (lang.isEmpty || lang == 'property') {
+          continue;
+        }
 
-  @override
-  Future<LocaleSpecificStrings> load(Locale locale) async
-  {
-IFTHENS
+        localeToPropertyToText.putIfAbsent(
+            Locale.parse(lang), () => <String, String>{})[propertyName] = row[col]!;
+        propertiesSet.add(propertyName);
+      }
+    }
+
+    this.properties = propertiesSet.toList()..sort();
   }
 
-  @override
-  bool shouldReload(LocaleSpecificStringsDelegate old) => false;
+  Map<Locale, Map<String, String>> localeToPropertyToText = {};
+
+  List<Locale> get locales {
+    bool isEn(Locale l) {
+      return l.languageCode == 'en';
+    }
+
+    return localeToPropertyToText.keys.toList()
+      ..sort((Locale a, Locale b) {
+        if (isEn(a) && !isEn(b)) {
+          return -1;
+        }
+        if (isEn(b) && !isEn(a)) {
+          return 1;
+        }
+
+        return a.toLanguageTag().compareTo(b.toLanguageTag());
+      });
+  }
+
+  Iterable<Locale> _localeTagsStartingWith(Locale l) sync* {
+    yield l;
+    for (var otherLang in this.locales) {
+      if (otherLang != l) {
+        yield otherLang;
+      }
+    }
+  }
+
+  late List<String> properties;
+
+  String text(Locale locale, String property) {
+    for (var l in _localeTagsStartingWith(locale)) {
+      var result = localeToPropertyToText[l]?[property];
+      if (result != null && result.isNotEmpty) {
+        if (l != locale) {
+          print('WARNING: Using $l as '
+              'fallback for $property[$locale]');
+        }
+
+        return result;
+      }
+    }
+    return '';
+  }
 }
 
+String localeToTitleCase(Locale l) {
+  String titleCase(String s) => s[0].toUpperCase() + s.substring(1).toLowerCase();
+  return l.toLanguageTag().split('-').map((s) => titleCase(s)).join();
+}
 
-extension LocaleSpecificStringsBuilderExt on BuildContext
+extension StringExt on String {
+  String get quoted {
+    return "'" + this.replaceAll("'", "\\'") + "'";
+    //return json.encode(this);
+  }
+}
+
+void csvFileToDartFile(File csvFile, File dartFile) {
+  final parsed = ParsedLangConstants(csvFile);
+
+  final output_lines = [];
+
+  void outLine([String? txt]) => output_lines.add(txt ?? '');
+
+  outLine("import 'package:flutter/widgets.dart';");
+  outLine("import 'package:flutter_localizations/flutter_localizations.dart';");
+  outLine("export 'package:flutter_localizations/flutter_localizations.dart';");
+  outLine();
+
+  outLine('const supportedLocales = <Locale>[');
+  for (var locale in parsed.locales) {
+    outLine(
+        '    Locale.fromSubtags(languageCode: ${locale.languageCode.quoted}, scriptCode: ${locale.scriptCode?.quoted}, countryCode: ${locale.countryCode?.quoted}),');
+  }
+  outLine('  ];');
+
+  outLine();
+  outLine('abstract class FlocaStrings {');
+  for (var p in parsed.properties) {
+    outLine('  String get $p;');
+  }
+  outLine('}');
+
+  String lang_to_classname(Locale lang) => 'FlocaStrings' + localeToTitleCase(lang);
+
+  for (var lang in parsed.locales) {
+    outLine();
+
+    outLine('class ${lang_to_classname(lang)} implements FlocaStrings {');
+
+    for (var p in parsed.properties) {
+      final dartString = parsed.text(lang, p).replaceAll('\$', '\\\$').quoted;
+      outLine('  @override String get $p => $dartString;');
+    }
+
+    outLine('}');
+  }
+
+  outLine();
+  outLine('class FlocaDelegate extends LocalizationsDelegate<FlocaStrings> {');
+  outLine('  const FlocaDelegate();');
+  outLine();
+  outLine('  @override');
+  outLine('  Future<FlocaStrings> load(Locale locale) async {');
+  outLine('    switch (locale.toLanguageTag()) {');
+  for (var locale in parsed.locales.skip(1)) {
+    outLine('      case ${locale.toLanguageTag().quoted}: return ${lang_to_classname(locale)}();');
+  }
+  outLine('      default: return ${lang_to_classname(parsed.locales.first)}();');
+  outLine('    }');
+  outLine('  }');
+  outLine();
+  outLine('  @override');
+  outLine('  bool isSupported(Locale locale) => supportedLocales.contains(locale);');
+  outLine();
+  outLine('  @override');
+  outLine('  bool shouldReload(FlocaDelegate old) => false;');
+
+  outLine('}');
+  outLine();
+  outLine('''
+extension FlocaBuildContextExt on BuildContext
 {
-  LocaleSpecificStrings get i18n {
-    return Localizations.of<LocaleSpecificStrings>(
-      this, LocaleSpecificStrings);
+  FlocaStrings get floca {
+    return Localizations.of<FlocaStrings>(this, FlocaStrings)!;
   }
 }
 
 const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
-      const LocaleSpecificStringsDelegate(),
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate
-    ];
+  const FlocaDelegate(),
+  GlobalMaterialLocalizations.delegate,
+  GlobalWidgetsLocalizations.delegate
+];  
+  ''');
 
-
-// for compatibility with https://github.com/long1eu/flutter_i18n
-class S extends LocaleSpecificStrings {
-  	static LocaleSpecificStringsDelegate get delegate => localizationsDelegates[0];
-	static LocaleSpecificStrings of(BuildContext context) => context.i18n;
-	static get supportedLocales => _supportedLocales;
-}
-
-
-final supportedLocales = _supportedLocales;
-''';
-
-String beforeHash(String text) => text.split('#').first;
-
-void csvFileToDartFile(File csvFile, File dartFile) {
-
-  final output_lines = [];
-
-  void toout([String? txt]) => output_lines.add(txt ?? '');
-
-  final lang_to_lines = <String,List<String>>{};
-
-  void add_line(String lang, String line) {
-    final lines = lang_to_lines.putIfAbsent(lang, () => <String>[]);
-    if (lang != 'EN') {
-      lines.add('@override');
-    }
-    lines.add(line);
-  }
-
-
-
-
-
-  for (var row in dictReader(csvFile)) {
-
-    final property_name = beforeHash(row['property'] ?? '').trim();
-    if (property_name.isEmpty) {
-      continue;
-    }
-
-    for (var col in row.keys) {
-      if (col.trim().toLowerCase()=='property') {
-        continue;
-      }
-
-      final lang = col.split('#').first.trim();
-      if (lang.isEmpty) {
-        continue;
-      }
-
-      var text = row[col] ?? '';
-
-      var warning_suffix = '';
-
-      final language_columns = row.keys.where((element) =>
-        element != 'property' && !element.trimLeft().startsWith('#')).toList();
-
-      // если не нашлось определения константы в этом языке (там пустая ячейка), берем значение
-      // из первого попавшегося языка - но печатаем предупреждение
-      if (text.isEmpty)
-        {
-          for (var anotherLang in language_columns) {
-            text = row[anotherLang] ?? '';
-            if (text.isNotEmpty) {
-              print('WARNING: Using ${anotherLang.toUpperCase()} as fallback for $property_name[$lang]');
-              warning_suffix = ' // fallback from {anotherLang}';
-            }
-            break;
-          }
-        }
-      final dartString = json.encode(text).replaceAll('\$', '\\\$');
-
-      final line = 'String get {property_name} => {dartString};' + warning_suffix;
-
-      add_line(lang, line);
-    }
-  }
-
-  // done with CSV: we have remembered all the data
-
-  // todo move this to the template
-  toout();
-  toout('// auto-generated by floca from {repr(str(src_file.name))}');
-  toout();
-  toout('// ignore_for_file: non_constant_identifier_names');
-  toout('// ignore_for_file: camel_case_types');
-  toout('// ignore_for_file: prefer_single_quotes');
-  toout();
-  toout();
-  toout("import 'package:flutter/widgets.dart';");
-  toout("import 'package:flutter_localizations/flutter_localizations.dart';");
-  toout("export 'package:flutter_localizations/flutter_localizations.dart';");
-
-  String lang_to_classname(String lang) {
-    if (lang.toUpperCase() == 'EN') {
-      return 'LocaleSpecificStrings';
-    }
-    else {
-      return 'LocaleSpecificStrings{lang.title()}';
-    }
-  }
-
-  for (var entry in lang_to_lines.entries) {
-    final lang = entry.key;
-    final lines = entry.value;
-
-    toout();
-    toout();
-
-    if (lang.toUpperCase() == 'EN') {
-      toout('class ' + lang_to_classname(lang));
-    } else {
-      toout("class ${lang_to_classname(lang)} extends #{lang_to_classname('EN')}");
-    }
-
-    toout('{');
-
-    toout(lines.map((e) => '  ' +e).join('\n'));
-    toout('}');
-  }
-
-  final supported_locales_lines = <String>[];
-  supported_locales_lines.add('const _supportedLocales = const <Locale> [');
-  for (var lang in lang_to_lines.keys) {
-    supported_locales_lines.add("    const Locale('${lang.toLowerCase()}'),");
-    supported_locales_lines.add('  ];');
-  }
-
-  var code = template;
-
-  final ifthens = [];
-
-  for (var lang in lang_to_lines.keys) {
-    if (lang.toUpperCase() != 'EN') {
-      ifthens.add(
-          '    if (locale.languageCode=="{lang.lower()}") return {lang_to_classname(lang)}();');
-    }
-  }
-  ifthens.add('    return {lang_to_classname("EN")}();');
-
-  code = code.replaceAll('LOCALESLIST', json.encode(lang_to_lines.keys.map((e) => e.toLowerCase()).toList()));
-  code = code.replaceAll('IFTHENS', ifthens.join('\n'));
-  code = code.replaceAll('SUPPORTED_LOCALES', supported_locales_lines.join('\n'));
-
-  toout();
-  toout();
-  toout(code.trim());
-
-  dartFile.writeAsStringSync(code);
-
+  dartFile.writeAsStringSync(output_lines.join('\n'));
 }
