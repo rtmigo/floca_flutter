@@ -36,6 +36,7 @@ import "newly_generated.dart";
   // this import adds the .i18n extension on BuildContext objects
 ```
 
+So all the localized strings are just `String` constants.
 
 # Install
 
