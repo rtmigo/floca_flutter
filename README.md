@@ -18,7 +18,7 @@ Widget build(BuildContext context) {
 }  
 ```
 
-An attempt to use nonexistent constants will be stopped at compile time:
+An attempt to use nonexistent constants will be prevented at compile time:
 
 ``` dart
 Widget build(BuildContext context) {
