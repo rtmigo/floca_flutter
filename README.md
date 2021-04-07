@@ -1,4 +1,4 @@
-Floca is a code-generation library for internationalizing Flutter apps.
+Floca is for internationalizing Flutter apps.
 
 Say, you have an Excel spreadsheet like this:
 
