@@ -78,8 +78,8 @@ $ flutter pub run floca:floca string_constants.csv string_constants.dart
 
 #### 3. Provide arguments to MaterialApp
 
-```dart
-import 'string_constants.dart'; // file we created with flocagen
+``` dart
+import 'string_constants.dart'; // file we created with floca
 
 MaterialApp(
   ...
@@ -91,8 +91,8 @@ MaterialApp(
 
 #### 5. Get localized text in your app
 
-```dart
-import 'string_constants.dart'; // file we created with flocagen
+``` dart
+import 'string_constants.dart'; // file we created with floca
 
 Widget build(BuildContext context) {
   // now [context] has a new property [.i18n]  
