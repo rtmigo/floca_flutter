@@ -39,7 +39,7 @@ import "newly_generated.dart";
 
 # Install
 
-Add floca to pubspec.yaml: 
+Update pubspec.yaml: 
 
 ``` yaml
 dependencies:
