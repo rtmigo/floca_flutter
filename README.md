@@ -1,9 +1,4 @@
-A simple command-line application.
-
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
-
-Floca is a library for internationalizing Flutter apps.
+Floca is a code-generation library for internationalizing Flutter apps.
 
 Say, you have an Excel spreadsheet like this:
 
