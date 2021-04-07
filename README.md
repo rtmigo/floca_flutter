@@ -50,7 +50,7 @@ dev_dependencies:
   floca: any
 ```
 
-Update dependencies:
+Run:
 
 ``` bash
 flutter pub get
