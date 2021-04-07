@@ -89,7 +89,7 @@ MaterialApp(
 );
 ```
 
-#### 5. Get localized text in your app
+#### 4. Get localized text in your app
 
 ``` dart
 import 'string_constants.dart'; // file we created with floca
