@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
               appBar: AppBar(
                   title: Text( localeIndex < 0
                                ? 'Default locale'
-                               : 'Locale #$localeIndex')),
+                               : 'Locale $localeIndex')),
               body: Center(
                   child: Text(
                     context.i18n.hello, // 'hello', or 'hola', or 'привет' depending on locale
