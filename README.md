@@ -18,8 +18,7 @@ Widget build(BuildContext context) {
 }  
 ```
 
-Here it is important not only what Floca allows you to do, but also what it 
-does not allow:
+An attempt to use nonexistent constants will be stopped at compile time:
 
 ``` dart
 Widget build(BuildContext context) {
