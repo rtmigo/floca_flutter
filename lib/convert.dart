@@ -176,7 +176,7 @@ void csvFileToDartFile(File csvFile, File dartFile) {
   outLine('''
 extension FlocaBuildContextExt on BuildContext
 {
-  FlocaStrings get floca {
+  FlocaStrings get i18n {
     return Localizations.of<FlocaStrings>(this, FlocaStrings)!;
   }
 }

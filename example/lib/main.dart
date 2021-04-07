@@ -9,43 +9,45 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
 
   // the [localeIndex] will determine what to pass as the [locale]
   // argument to the [MaterialApp] constructor. It will allow us to switch
   // between supported locales manually.
-  int localeIndex = -1; // -1 for null, 0 and above - for supportedLocales[localeIndex]
-}
+  int localeIndex = -1; // -1 for default locale
 
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         localizationsDelegates: localizationsDelegates,
         supportedLocales: supportedLocales,
-        locale: (widget.localeIndex < 0) ? null : supportedLocales[widget.localeIndex],
+        locale: localeIndex < 0 ? null : supportedLocales[localeIndex],
 
         // the current [context] was made before we created the MaterialApp
         // with localization. To use a localized context, we need a new builder
 
-        home: Builder(builder: (context) {
+        home: Builder(builder: (BuildContext context) {
 
           // ok, this [context] knows the locale
 
           return Scaffold(
               appBar: AppBar(
-                  title: Text( widget.localeIndex < 0
+                  title: Text( localeIndex < 0
                                ? 'Default locale'
-                               : 'Locale #${widget.localeIndex}')),
+                               : 'Locale #$localeIndex')),
               body: Center(
                   child: Text(
-                    context.floca.hello, // 'hello', or 'hola', or 'привет' depending on locale
+                    context.i18n.hello, // 'hello', or 'hola', or 'привет' depending on locale
                     style: Theme.of(context).textTheme.headline3)),
+
               floatingActionButton: FloatingActionButton(
                 onPressed: () => setState(() {
                   // increase localeIndex and rebuild MaterialApp with
                   // other [locale] argument
-                  if (++widget.localeIndex >= supportedLocales.length) {
-                    widget.localeIndex = -1;
+                  if (++localeIndex >= supportedLocales.length) {
+                    localeIndex = -1;
                   }
                 }),
                 child: Icon(Icons.g_translate),
