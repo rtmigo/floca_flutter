@@ -1,3 +1,7 @@
+[![Generic badge](https://img.shields.io/badge/status-draft-red.svg)](#)
+
+# floca
+
 Floca is for internationalizing Flutter apps.
 
 Say, you have an Excel spreadsheet like this:
