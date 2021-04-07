@@ -22,8 +22,7 @@ An attempt to use nonexistent constants will be prevented at compile time:
 
 ``` dart
 Widget build(BuildContext context) {
-  // the following constant was not in the spreadsheet 
-  var c = context.i18n.undefined; // COMPILE-TIME ERROR!
+  var c = context.i18n.nonexistent; // COMPILE-TIME ERROR!
   ...
 }  
 ```
