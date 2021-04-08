@@ -2,7 +2,7 @@
 
 # floca
 
-Floca is for internationalizing Flutter apps.
+**FL**utter **LOCA**lization library.
 
 Say, you have an Excel spreadsheet like this:
 
@@ -32,9 +32,9 @@ Widget build(BuildContext context) {
 }  
 ```
 
-# What Floca does
+### Floca is a code generator
 
-Floca takes your `.csv` spreadsheet and generates a `.dart` file.
+It takes your `.csv` spreadsheet and generates a `.dart` file.
 ```dart
 import "newly_generated.dart";
   // this import adds the .i18n extension on BuildContext objects
