@@ -22,16 +22,7 @@ Widget build(BuildContext context) {
 }  
 ```
 
-Errors will be prevented at compile time:
-
-``` dart
-Widget build(BuildContext context) {
-  var c = context.i18n.nonexistent; // COMPILE-TIME ERROR!
-  ...
-}  
-```
-
-### Floca is a code generator
+## Floca is a code generator
 
 It takes your `.csv` spreadsheet and generates a `.dart` file.
 ```dart
@@ -39,7 +30,15 @@ import "newly_generated.dart";
   // this import adds the .i18n extension on BuildContext objects
 ```
 
-So all the localized strings are just `String` constants.
+This approach gives you maximum compatibility and performance. In addition, 
+potential errors are prevented at compile time.
+
+``` dart
+Widget build(BuildContext context) {
+  var c = context.i18n.nonexistent; // COMPILE-TIME ERROR!
+  ...
+}  
+```
 
 # Install
 
