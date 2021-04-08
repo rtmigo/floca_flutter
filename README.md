@@ -62,7 +62,7 @@ $ flutter pub get
 Check it runs:
 
 ``` bash
-$ flutter pub run floca:floca --version
+$ flutter pub run floca:floca --help
 ```
 
 

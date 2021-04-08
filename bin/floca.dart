@@ -5,9 +5,19 @@ import 'dart:io';
 
 import 'package:floca/convert.dart';
 
+void printUsage() {
+  print('Usage: floca <source.csv> <generated.dart>');
+}
+
 void main(List<String> arguments) {
+
+  if (arguments.map((e) => e.toLowerCase()).contains('--help')) {
+    printUsage();
+    exit(0);
+  }
+
   if (arguments.length < 2) {
-    print('Usage: floca <source.csv> <generated.dart>');
+    printUsage();
     exit(1);
   }
 
