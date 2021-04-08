@@ -35,7 +35,7 @@ potential errors are prevented at compile time.
 
 ``` dart
 Widget build(BuildContext context) {
-  var c = context.i18n.nonexistent; // COMPILE-TIME ERROR!
+  var c = context.i18n.gritting; // COMPILE-TIME ERROR!
   ...
 }  
 ```
