@@ -11,7 +11,7 @@ Say, you have an Excel spreadsheet like this:
 | greeting | hi!    | hola!   | привет! | हाय! |
 | farewell | bye    | adiós   | пока    |अलविदा|
 
-`floca` will let you access its content like this:
+Floca will let you access its content like this:
 
 ``` dart
 Widget build(BuildContext context) {
@@ -22,8 +22,7 @@ Widget build(BuildContext context) {
 }  
 ```
 
-An attempt to use constants not specified in the spreadsheet will be prevented 
-at compile time:
+Errors will be prevented at compile time:
 
 ``` dart
 Widget build(BuildContext context) {
