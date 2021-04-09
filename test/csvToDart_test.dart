@@ -16,24 +16,31 @@ void main() {
   test('parse', () {
     final csvFile = File('test/data/src.csv');
     final plc = ParsedLangConstants(csvFile);
-    expect(plc.locales.map((e) => e.toLanguageTag()), ['en-US', 'eo', 'ru']);
+
+    expect(plc.locales.map((e) => e.toLanguageTag()), ['en-US', 'es', 'ru']);
     expect(plc.localeToPropertyToText[Locale.parse('ru')]?['language'], 'Язык');
     expect(plc.localeToPropertyToText[Locale.parse('ru')]?['termsOfUse'], '');
     expect(plc.localeToPropertyToText[Locale.parse('en-US')]?['termsOfUse'], 'Terms of Use');
 
     expect(plc.text(Locale.parse('ru'), 'language'), 'Язык');
     expect(plc.text(Locale.parse('en-US'), 'termsOfUse'), 'Terms of Use');
-    expect(plc.text(Locale.parse('ru'), 'termsOfUse'), 'Terms of Use'); // missing in ru, present in en
+  });
+
+  test('missing values', () {
+    final csvFile = File('test/data/src.csv');
+    final plc = ParsedLangConstants(csvFile);
+
+    expect(plc.text(Locale.parse('ru'), 'termsOfUse', tryOtherLocales: true), 'Terms of Use');
+    expect(()=>plc.text(Locale.parse('ru'), 'termsOfUse'), throwsA(isA<MissingValueError>()));
   });
 
   test('tst', () {
     final csvFile = File('test/data/src.csv');
     final outFile = File('test/data/dst.dart.txt');
-    csvFileToDartFile(csvFile, outFile);
+    final expectedFile = File('test/data/exp.dart.txt');
 
-    //final z = join(dirname(Platform.script.path), 'data/src.csv');
-    print('--');
-    //print(Platform.script.c);
-    print('---');
+    csvFileToDartFile(csvFile, outFile, tryOtherLocales: true);
+
+    expect(outFile.readAsStringSync(), expectedFile.readAsStringSync());
   });
 }
