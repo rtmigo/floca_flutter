@@ -40,6 +40,12 @@ void main() {
 
     csvFileToDartFile(csvFile, outFile, tryOtherLocales: true);
 
-    expect(outFile.readAsStringSync(), expectedFile.readAsStringSync().replaceAll('\r\n', '\n'));
+    var expected = expectedFile.readAsStringSync();
+    if (Platform.isWindows) {
+      expected = expected.replaceAll('\r', '');
+    }
+
+
+    expect(outFile.readAsStringSync(), expected);
   });
 }
