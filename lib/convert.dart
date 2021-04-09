@@ -16,6 +16,15 @@ class MissingValueError extends FlocaError {
   final Locale locale;
 }
 
+String trimLineReturnAtRight(String cell) {
+  // seems to be a bug: in Windows CsvToListConverter returns '\r' chars in some cells,
+  // but on POSIX there are no '\r' in same cells
+  if (cell.endsWith('\r')) {
+    cell = cell.substring(0, cell.length-1);
+  }
+  return cell;
+}
+
 Iterable<Map<String, String>> dictReader(File csvFile) sync* {
   final rowsAsListOfValues = const CsvToListConverter().convert(csvFile.readAsStringSync(),
       fieldDelimiter: csvFile.path.toLowerCase().endsWith('.tsv') ? '\t' : ',', eol: '\n');
@@ -30,7 +39,7 @@ Iterable<Map<String, String>> dictReader(File csvFile) sync* {
     final result = <String, String>{};
 
     for (int i = 0; i < columnNames.length; ++i) {
-      result[columnNames[i]] = i < row.length ? row[i] : null;
+      result[columnNames[i]] = (i < row.length) ? trimLineReturnAtRight(row[i]) : '';
     }
 
     yield result;

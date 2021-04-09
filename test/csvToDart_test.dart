@@ -42,7 +42,7 @@ void main() {
 
     var expected = expectedFile.readAsStringSync();
     if (Platform.isWindows) {
-      expected = expected.replaceAll('\r', '');
+      expected = expected.replaceAll('\r\n', '\n');
     }
 
 
