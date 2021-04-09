@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
 import 'dart:io';
 import 'package:intl/locale.dart';
-import 'package:path/path.dart' show dirname, join;
 import 'package:floca/convert.dart';
 
 void main() {
