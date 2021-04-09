@@ -6,6 +6,25 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:intl/locale.dart';
 
+class FlocaError extends Error {
+
+}
+
+class MissingValueError extends FlocaError {
+  MissingValueError(this.property, this.locale);
+  final String property;
+  final Locale locale;
+}
+
+String trimLineReturnAtRight(String cell) {
+  // seems to be a bug: in Windows CsvToListConverter returns '\r' chars in some cells,
+  // but on POSIX there are no '\r' in same cells
+  if (cell.endsWith('\r')) {
+    cell = cell.substring(0, cell.length-1);
+  }
+  return cell;
+}
+
 Iterable<Map<String, String>> dictReader(File csvFile) sync* {
   final rowsAsListOfValues = const CsvToListConverter().convert(csvFile.readAsStringSync(),
       fieldDelimiter: csvFile.path.toLowerCase().endsWith('.tsv') ? '\t' : ',', eol: '\n');
@@ -20,7 +39,7 @@ Iterable<Map<String, String>> dictReader(File csvFile) sync* {
     final result = <String, String>{};
 
     for (int i = 0; i < columnNames.length; ++i) {
-      result[columnNames[i]] = i < row.length ? row[i] : null;
+      result[columnNames[i]] = (i < row.length) ? trimLineReturnAtRight(row[i]) : '';
     }
 
     yield result;
@@ -85,17 +104,26 @@ class ParsedLangConstants {
 
   late List<String> properties;
 
-  String text(Locale locale, String property) {
+  String text(Locale locale, String property, {bool tryOtherLocales = false}) {
     for (var l in _localeTagsStartingWith(locale)) {
       var result = localeToPropertyToText[l]?[property];
-      if (result != null && result.isNotEmpty) {
-        if (l != locale) {
-          print('WARNING: Using $l as '
-              'fallback for $property[$locale]');
-        }
 
-        return result;
+      if (result==null || result.isEmpty) {
+        if (tryOtherLocales) {
+          continue;
+        } else {
+          throw MissingValueError(property, locale);
+        }
       }
+
+      assert(result.isNotEmpty);
+
+      if (l != locale) {
+        print('WARNING: Using $l as '
+            'fallback for $property[$locale]');
+      }
+
+      return result;
     }
     return '';
   }
@@ -113,7 +141,7 @@ extension StringExt on String {
   }
 }
 
-void csvFileToDartFile(File csvFile, File dartFile) {
+void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = false}) {
   final parsed = ParsedLangConstants(csvFile);
 
   final output_lines = [];
@@ -147,7 +175,7 @@ void csvFileToDartFile(File csvFile, File dartFile) {
     outLine('class ${lang_to_classname(lang)} implements FlocaStrings {');
 
     for (var p in parsed.properties) {
-      final dartString = parsed.text(lang, p).replaceAll('\$', '\\\$').quoted;
+      final dartString = parsed.text(lang, p, tryOtherLocales: tryOtherLocales).replaceAll('\$', '\\\$').quoted;
       outLine('  @override String get $p => $dartString;');
     }
 
