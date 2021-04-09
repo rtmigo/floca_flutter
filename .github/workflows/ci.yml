@@ -24,37 +24,38 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        sdk: [2.12.0]
     steps:
       - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: ${{ matrix.sdk }}
-      - name: Install dependencies
-        run: dart pub get
+      - name: Download Flutter
+        run: |
+          git clone https://github.com/flutter/flutter.git -b stable --depth 1
+          echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+      - name: Init Flutter and install dependencies
+        run: flutter pub get
       - name: Run tests
-        run: dart test
+        run: flutter test
 
   analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: dart-lang/setup-dart@v1
-        with:
-          sdk: 2.12.0
-      - name: Install dependencies
-        run: dart pub get
+      - name: Download Flutter
+        run: |
+          git clone https://github.com/flutter/flutter.git -b stable --depth 1
+          echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+      - name: Init Flutter and install dependencies
+        run: flutter pub get
       - name: Analyze
-        run: dart analyze --fatal-infos
+        run: flutter analyze --fatal-infos
       - name: Publish (dry run)
-        run: dart pub publish --dry-run
+        run: flutter pub publish --dry-run
 
   merge-to-staging:
     needs: [test, analyze]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Merge current -> master
+      - name: Merge current -> staging
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
