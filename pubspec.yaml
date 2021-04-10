@@ -1,7 +1,7 @@
 name: floca
 description: Flutter localization library
 repository: https://github.com/rtmigo/floca
-version: 0.1.0-alpha
+version: 0.1.0-alpha.1
 
 
 environment:
