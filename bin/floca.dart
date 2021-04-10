@@ -17,13 +17,28 @@ class UnexpectedArgumentError extends FlocaError {
   final String argument;
 }
 
+class UsageError extends FlocaError {
+  UsageError(): super('');
+}
+
+
 class FileExtensionError extends FlocaError {
   FileExtensionError(this.filename): super('Unexpected file extension: $filename');
   final String filename;
 }
 
-
 void main(List<String> arguments) {
+  try {
+    mainInner(arguments);
+  } on UsageError {
+    printUsage();
+  } on FlocaError catch (e) {
+    print(e.message);
+    exit(1);
+  }
+}
+
+void mainInner(List<String> arguments) {
   if (arguments.map((e) => e.toLowerCase()).contains('--help')) {
     printUsage();
     exit(0);
@@ -34,8 +49,7 @@ void main(List<String> arguments) {
   assert(optional.length + positional.length == arguments.length);
 
   if (positional.length < 2) {
-    printUsage();
-    exit(1);
+    throw UsageError();
   }
 
   bool subst = false;
