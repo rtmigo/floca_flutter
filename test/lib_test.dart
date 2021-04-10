@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'dart:io';
 import 'package:intl/locale.dart';
-import '../lib/floca.dart';
+import 'package:floca/floca.dart';
 
 void main() {
 
