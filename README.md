@@ -46,6 +46,10 @@ Update `pubspec.yaml`:
 
 ``` yaml
 dependencies:
+  flutter_localizations:
+    sdk: flutter
+    
+dev_dependencies:
   floca: any
 ```
 
@@ -77,7 +81,7 @@ Save it as `.csv` file, say, `string_constants.csv`.
 #### 2. Generate a .dart file from it
 
 ```bash
-$ flutter pub run floca:floca string_constants.csv string_constants.dart
+$ flutter pub run floca string_constants.csv string_constants.dart
 ```
 
 #### 3. Provide arguments to MaterialApp
