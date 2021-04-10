@@ -1,4 +1,5 @@
-[![Generic badge](https://img.shields.io/badge/status-draft-red.svg)](#)
+[![Pub Package](https://img.shields.io/pub/v/floca.svg)](https://pub.dev/packages/floca)
+[![pub points](https://badges.bar/floca/pub%20points)](https://pub.dev/floca/tabular/score)
 
 # [floca](https://github.com/rtmigo/floca)
 
@@ -81,7 +82,7 @@ Save it as `.csv` file, say, `string_constants.csv`.
 #### 2. Generate a .dart file from it
 
 ```bash
-$ flutter pub run floca string_constants.csv string_constants.dart
+$ flutter pub run floca string_constants.csv lib/string_constants.dart
 ```
 
 #### 3. Provide arguments to MaterialApp
