@@ -27,6 +27,8 @@ Widget build(BuildContext context) {
 
 It takes your `.csv` spreadsheet and generates a `.dart` file.
 
+You include this file in the project:
+
 ```dart
 import "newly_generated.dart";
   // this import adds the .i18n extension on BuildContext objects
