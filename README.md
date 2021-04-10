@@ -29,7 +29,7 @@ Floca is a command-line app, that takes your `.csv` spreadsheet and generates
 a `.dart` file.
 
 Then you import the generated file in the project and get all the needed 
-functionality:
+functionality, including the localized strings:
 
 ```dart
 import "newly_generated.dart";
