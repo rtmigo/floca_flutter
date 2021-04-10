@@ -7,26 +7,31 @@ import 'package:csv/csv.dart';
 import 'package:intl/locale.dart';
 
 class FlocaError extends Error {
-
+  FlocaError(this.message);
+  String message;
 }
 
 class MissingValueError extends FlocaError {
-  MissingValueError(this.property, this.locale);
+  MissingValueError(this.property, this.locale):
+        super('Value $property not specified for locale $locale.');
   final String property;
   final Locale locale;
 }
 
-String trimCrRight(String cell) {
-  // seems to be a bug: in Windows CsvToListConverter returns '\r' chars in some cells,
-  // but on POSIX there are no '\r' in same cells
-  if (cell.endsWith('\r')) {
-    cell = cell.substring(0, cell.length-1);
-  }
-  return cell;
-}
+// String trimCrRight(String cell) {
+//   // seems to be a bug: in Windows CsvToListConverter returns '\r' chars in some cells,
+//   // but on POSIX there are no '\r' in same cells
+//   if (cell.endsWith('\r')) {
+//     cell = cell.substring(0, cell.length-1);
+//   }
+//   return cell;
+// }
 
 Iterable<Map<String, String>> dictReader(File csvFile) sync* {
-  final rowsAsListOfValues = const CsvToListConverter().convert(csvFile.readAsStringSync(),
+
+  String text = csvFile.readAsStringSync().replaceAll('\r\n', '\n'); // windows
+
+  final rowsAsListOfValues = const CsvToListConverter().convert(text,
       fieldDelimiter: csvFile.path.toLowerCase().endsWith('.tsv') ? '\t' : ',', eol: '\n');
   List<String>? columnNames;
 
@@ -39,7 +44,7 @@ Iterable<Map<String, String>> dictReader(File csvFile) sync* {
     final result = <String, String>{};
 
     for (int i = 0; i < columnNames.length; ++i) {
-      result[columnNames[i]] = (i < row.length) ? trimCrRight(row[i]) : '';
+      result[columnNames[i]] = (i < row.length) ? row[i] : '';
     }
 
     yield result;
