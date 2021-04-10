@@ -1,4 +1,5 @@
-[![Generic badge](https://img.shields.io/badge/status-draft-red.svg)](#)
+[![Pub Package](https://img.shields.io/pub/v/floca.svg)](https://pub.dev/packages/floca)
+[![pub points](https://badges.bar/floca/pub%20points)](https://pub.dev/floca/tabular/score)
 
 # [floca](https://github.com/rtmigo/floca)
 
@@ -22,23 +23,22 @@ Widget build(BuildContext context) {
 }  
 ```
 
-## Floca is a code generator
+# How Floca works
 
-It takes your `.csv` spreadsheet and generates a `.dart` file.
+Floca is a command-line app, that takes your `.csv` spreadsheet and generates 
+a `.dart` file.
+
+Then you import the generated file in the project and get all the needed 
+functionality, including the localized strings:
+
 ```dart
 import "newly_generated.dart";
-  // this import adds the .i18n extension on BuildContext objects
 ```
 
-This approach gives you maximum compatibility and performance. In addition, 
-potential errors are prevented at compile time.
+This approach gives you maximum compatibility and performance. 
+In addition, many potential errors are prevented at compile time.
 
-``` dart
-Widget build(BuildContext context) {
-  var c = context.i18n.gritting; // COMPILE-TIME ERROR!
-  ...
-}  
-```
+
 
 # Install
 
@@ -46,6 +46,10 @@ Update `pubspec.yaml`:
 
 ``` yaml
 dependencies:
+  flutter_localizations:
+    sdk: flutter
+    
+dev_dependencies:
   floca: any
 ```
 
@@ -77,7 +81,7 @@ Save it as `.csv` file, say, `string_constants.csv`.
 #### 2. Generate a .dart file from it
 
 ```bash
-$ flutter pub run floca:floca string_constants.csv string_constants.dart
+$ flutter pub run floca string_constants.csv lib/string_constants.dart
 ```
 
 #### 3. Provide arguments to MaterialApp
