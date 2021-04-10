@@ -36,7 +36,7 @@ import "newly_generated.dart";
 ```
 
 This approach gives you maximum compatibility and performance. 
-In addition, potential errors are prevented at compile time.
+In addition, many potential errors are prevented at compile time.
 
 
 
