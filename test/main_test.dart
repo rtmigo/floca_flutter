@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:floca/convert.dart';
+import 'package:floca/floca.dart';
 import 'package:test/test.dart';
 
 import '../bin/floca.dart' as cli;

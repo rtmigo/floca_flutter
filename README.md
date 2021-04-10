@@ -42,14 +42,10 @@ Widget build(BuildContext context) {
 
 # Install
 
-Update pubspec.yaml: 
+Update `pubspec.yaml`: 
 
 ``` yaml
 dependencies:
-  flutter_localizations:
-    sdk: flutter          
-
-dev_dependencies:
   floca: any
 ```
 
