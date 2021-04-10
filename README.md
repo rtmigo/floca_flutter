@@ -23,9 +23,10 @@ Widget build(BuildContext context) {
 }  
 ```
 
-----
+# How Floca works
 
-Floca takes your `.csv` spreadsheet and generates a `.dart` file.
+It takes your `.csv` spreadsheet and generates a `.dart` file.
+
 ```dart
 import "newly_generated.dart";
   // this import adds the .i18n extension on BuildContext objects
