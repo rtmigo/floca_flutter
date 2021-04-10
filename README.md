@@ -26,24 +26,19 @@ Widget build(BuildContext context) {
 # How Floca works
 
 Floca is a command-line app, that takes your `.csv` spreadsheet and generates 
-a `.dart` file.
+a `.dart` file. This approach gives you maximum compatibility and performance. 
+In addition, potential errors are prevented at compile time.
 
-You include the generated file in the project:
+
+You import the generated file in the project:
 
 ```dart
 import "newly_generated.dart";
-  // this import adds the .i18n extension on BuildContext objects
 ```
 
-This approach gives you maximum compatibility and performance. In addition, 
-potential errors are prevented at compile time.
+The imported file adds `.i18n` extension on `BuildContext` objects. And also
+exports some variables for `MaterialApp` initialization.    
 
-``` dart
-Widget build(BuildContext context) {
-  var c = context.i18n.gritting; // COMPILE-TIME ERROR!
-  ...
-}  
-```
 
 # Install
 
