@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'file:///Volumes/stuff.kongo/.Lightspot/rtmigo/CabinetWs/Code/dart/floca/bin/floca_lib.dart';
+import '../bin/floca_lib.dart';
 import 'package:test/test.dart';
 
 import '../bin/floca.dart' as cli;
