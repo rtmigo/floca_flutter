@@ -1,6 +1,6 @@
 [![Generic badge](https://img.shields.io/badge/status-draft-red.svg)](#)
 
-## [floca](https://github.com/rtmigo/floca): FLutter LOCAlization library
+# [floca](https://github.com/rtmigo/floca): FLutter LOCAlization library
 
 Say, you have an Excel spreadsheet like this:
 
