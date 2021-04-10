@@ -1,6 +1,8 @@
 [![Generic badge](https://img.shields.io/badge/status-draft-red.svg)](#)
 
-# [floca](https://github.com/rtmigo/floca): FLutter LOCAlization library
+# [floca](https://github.com/rtmigo/floca)
+
+Floca is a **Fl**utter **loca**lization library.
 
 Say, you have an Excel spreadsheet like this:
 
@@ -56,7 +58,7 @@ $ flutter pub get
 Check it runs:
 
 ``` bash
-$ flutter pub run floca:floca --help
+$ flutter pub run floca --help
 ```
 
 
