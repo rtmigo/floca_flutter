@@ -13,10 +13,15 @@ void printUsage() {
 }
 
 class UnexpectedArgumentError extends FlocaError {
-  UnexpectedArgumentError(this.argument);
-
+  UnexpectedArgumentError(this.argument): super('Unexpected argument: $argument');
   final String argument;
 }
+
+class FileExtensionError extends FlocaError {
+  FileExtensionError(this.filename): super('Unexpected file extension: $filename');
+  final String filename;
+}
+
 
 void main(List<String> arguments) {
   if (arguments.map((e) => e.toLowerCase()).contains('--help')) {
@@ -47,12 +52,17 @@ void main(List<String> arguments) {
   final csvFilename = arguments[0];
   final dartFilename = arguments[1];
 
-  if (!csvFilename.toLowerCase().endsWith('.csv')) {
-    throw 'Unexpected CSV filename: $csvFilename';
+  bool endsAny(String path, Iterable<String> suffixes) {
+    path = path.toLowerCase();
+    return suffixes.any((suf) => path.endsWith(suf));
   }
 
-  if (!dartFilename.toLowerCase().endsWith('.dart')) {
-    throw 'Unexpected Dart filename: $dartFilename';
+  if (!endsAny(csvFilename, ['.csv', '.csv.test'])) {
+    throw FileExtensionError(csvFilename);
+  }
+
+  if (!endsAny(dartFilename, ['.dart', '.dart.test'])) {
+    throw FileExtensionError(dartFilename);
   }
 
   csvFileToDartFile(File(csvFilename), File(dartFilename), tryOtherLocales: subst);

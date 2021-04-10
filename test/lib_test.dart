@@ -34,11 +34,16 @@ void main() {
   });
 
   test('tst', () {
-    final csvFile = File('test/data/src.csv');
-    final outFile = File('test/data/dst.dart.txt');
+
+    File sourceFile = File('test/data/src.csv');
+    File generatedFile = File('test/data/generated.dart.test');
     final expectedFile = File('test/data/exp.dart.txt');
 
-    csvFileToDartFile(csvFile, outFile, tryOtherLocales: true);
+    if (generatedFile.existsSync()) {
+      generatedFile.deleteSync();
+    }
+
+    csvFileToDartFile(sourceFile, generatedFile, tryOtherLocales: true);
 
     var expected = expectedFile.readAsStringSync();
     if (Platform.isWindows) {
@@ -46,6 +51,6 @@ void main() {
     }
 
 
-    expect(outFile.readAsStringSync(), expected);
+    expect(generatedFile.readAsStringSync(), expected);
   });
 }
