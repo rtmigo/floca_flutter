@@ -3,7 +3,7 @@
 
 import 'dart:io';
 
-import 'package:floca/floca.dart';
+import 'floca_lib.dart';
 
 void printUsage() {
   print('Usage: floca <source.csv> <generated.dart>');
