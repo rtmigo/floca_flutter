@@ -25,7 +25,7 @@ Widget build(BuildContext context) {
 
 # How Floca works
 
-It is command-line app, that takes your `.csv` spreadsheet and generates 
+Floca is a command-line app, that takes your `.csv` spreadsheet and generates 
 a `.dart` file.
 
 You include the generated file in the project:
