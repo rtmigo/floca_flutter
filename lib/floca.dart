@@ -149,9 +149,9 @@ extension StringExt on String {
 void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = false}) {
   final parsed = ParsedLangConstants(csvFile);
 
-  final output_lines = [];
+  final outputLines = [];
 
-  void outLine([String? txt]) => output_lines.add(txt ?? '');
+  void outLine([String? txt]) => outputLines.add(txt ?? '');
 
   outLine("import 'package:flutter/widgets.dart';");
   outLine("import 'package:flutter_localizations/flutter_localizations.dart';");
@@ -172,12 +172,12 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   }
   outLine('}');
 
-  String lang_to_classname(Locale lang) => 'FlocaStrings' + localeToTitleCase(lang);
+  String langToClassname(Locale lang) => 'FlocaStrings' + localeToTitleCase(lang);
 
   for (var lang in parsed.locales) {
     outLine();
 
-    outLine('class ${lang_to_classname(lang)} implements FlocaStrings {');
+    outLine('class ${langToClassname(lang)} implements FlocaStrings {');
 
     for (var p in parsed.properties) {
       final dartString = parsed.text(lang, p, tryOtherLocales: tryOtherLocales).replaceAll('\$', '\\\$').quoted;
@@ -195,9 +195,9 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   outLine('  Future<FlocaStrings> load(Locale locale) async {');
   outLine('    switch (locale.toLanguageTag()) {');
   for (var locale in parsed.locales.skip(1)) {
-    outLine('      case ${locale.toLanguageTag().quoted}: return ${lang_to_classname(locale)}();');
+    outLine('      case ${locale.toLanguageTag().quoted}: return ${langToClassname(locale)}();');
   }
-  outLine('      default: return ${lang_to_classname(parsed.locales.first)}();');
+  outLine('      default: return ${langToClassname(parsed.locales.first)}();');
   outLine('    }');
   outLine('  }');
   outLine();
@@ -224,5 +224,5 @@ const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
 ];  
   ''');
 
-  dartFile.writeAsStringSync(output_lines.join('\n'));
+  dartFile.writeAsStringSync(outputLines.join('\n'));
 }
