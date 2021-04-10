@@ -18,15 +18,6 @@ class MissingValueError extends FlocaError {
   final Locale locale;
 }
 
-// String trimCrRight(String cell) {
-//   // seems to be a bug: in Windows CsvToListConverter returns '\r' chars in some cells,
-//   // but on POSIX there are no '\r' in same cells
-//   if (cell.endsWith('\r')) {
-//     cell = cell.substring(0, cell.length-1);
-//   }
-//   return cell;
-// }
-
 Iterable<Map<String, String>> dictReader(File csvFile) sync* {
 
   String text = csvFile.readAsStringSync().replaceAll('\r\n', '\n'); // windows
@@ -153,6 +144,8 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
 
   void outLine([String? txt]) => outputLines.add(txt ?? '');
 
+  outLine('// generated with Floca. See https://github.com/rtmigo/floca#readme');
+  outLine();
   outLine("import 'package:flutter/widgets.dart';");
   outLine("import 'package:flutter_localizations/flutter_localizations.dart';");
   outLine("export 'package:flutter_localizations/flutter_localizations.dart';");
