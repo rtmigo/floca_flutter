@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'dart:io';
 import 'package:intl/locale.dart';
-import 'package:floca/floca.dart';
+import '../bin/floca_lib.dart';
 
 void main() {
 
@@ -33,7 +33,7 @@ void main() {
     expect(()=>plc.text(Locale.parse('ru'), 'termsOfUse'), throwsA(isA<MissingValueError>()));
   });
 
-  test('tst', () {
+  test('csvFileToDartFile', () {
 
     File sourceFile = File('test/data/src.csv');
     File generatedFile = File('test/data/generated.dart.test');
@@ -49,7 +49,6 @@ void main() {
     if (Platform.isWindows) {
       expected = expected.replaceAll('\r\n', '\n');
     }
-
 
     expect(generatedFile.readAsStringSync(), expected);
   });
