@@ -211,7 +211,7 @@ extension FlocaBuildContextExt on BuildContext
 }
 
 const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
-  const FlocaDelegate(),
+  FlocaDelegate(),
   GlobalMaterialLocalizations.delegate,
   GlobalWidgetsLocalizations.delegate
 ];  
