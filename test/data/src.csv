@@ -7,6 +7,9 @@ language,Язык,Language,ignored,Lingvo
 rateApp,Оценить приложение,Rate the app,ignored,
 withHash,# это символ решетки,# is a hash sign,ignored,# estas la krado simbolo
 ,,,,
-pushedButtonTimes,Вы нажимали эту кнопку столько раз:,You have pushed the button this many times:,,Vi premis la butonon tiel multajn fojojn:
+pushedButtonTimes,"Вы нажимали эту 'кнопку'
+столько раз:","You have pushed the 'button'
+this many times:",,"Vi premis la 'butonon'
+tiel multajn fojojn:"
 demo,Демо,Demo,,Demo
 hello,Привет!,Hello!,,Hola!

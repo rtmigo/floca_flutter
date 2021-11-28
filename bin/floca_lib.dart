@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:intl/locale.dart';
+import '_string_ext.dart';
 
 class FlocaError extends Error {
   FlocaError(this.message);
@@ -130,12 +131,9 @@ String localeToTitleCase(Locale l) {
   return l.toLanguageTag().split('-').map((s) => titleCase(s)).join();
 }
 
-extension StringExt on String {
-  String get quoted {
-    return "'" + this.replaceAll("'", "\\'") + "'";
-    //return json.encode(this);
-  }
-}
+
+
+//String _escape()
 
 void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = false}) {
   final parsed = ParsedLangConstants(csvFile);
