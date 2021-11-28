@@ -117,5 +117,5 @@ jobs:
             "expiration": 1570721159347
           }
           EOF
-      - name: Publish (dry run)
+      - name: Publish
         run: flutter pub publish
