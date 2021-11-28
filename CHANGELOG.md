@@ -1,4 +1,4 @@
-## 0.1.5
+## 0.1.6
 
 - The line break characters inside string constants will be escaped
 
