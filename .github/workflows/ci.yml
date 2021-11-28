@@ -96,14 +96,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: dart-lang/setup-dart@v1
+
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
       - name: Format
         run: dart format .
-      - name: Test formatted
-        run: dart test
-      - name: Analyze formatted
-        run: dart analyze --fatal-infos
+      - name: Analyze
+        run: flutter analyze --fatal-infos
 
       - name: Setup credentials
         # data from cat ~/.pub-cache/credentials.json
@@ -118,5 +117,5 @@ jobs:
             "expiration": 1570721159347
           }
           EOF
-      - name: Publish package
-        run: pub publish -f
+      - name: Publish (dry run)
+        run: flutter pub publish
