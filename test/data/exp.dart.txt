@@ -28,7 +28,7 @@ class FlocaStringsEnUs implements FlocaStrings {
   @override String get language => 'Language';
   @override String get licenses => 'Copyrights';
   @override String get privacyTerms => 'Privacy terms';
-  @override String get pushedButtonTimes => 'You have pushed the button this many times:';
+  @override String get pushedButtonTimes => 'You have pushed the \'button\'\nthis many times:';
   @override String get rateApp => 'Rate the app';
   @override String get termsOfUse => 'Terms of Use';
   @override String get withHash => '# is a hash sign';
@@ -40,7 +40,7 @@ class FlocaStringsEs implements FlocaStrings {
   @override String get language => 'Lingvo';
   @override String get licenses => 'Kopirajta avizo';
   @override String get privacyTerms => 'Privateca Politiko';
-  @override String get pushedButtonTimes => 'Vi premis la butonon tiel multajn fojojn:';
+  @override String get pushedButtonTimes => 'Vi premis la \'butonon\'\ntiel multajn fojojn:';
   @override String get rateApp => 'Rate the app';
   @override String get termsOfUse => 'Terms of Use';
   @override String get withHash => '# estas la krado simbolo';
@@ -52,7 +52,7 @@ class FlocaStringsRu implements FlocaStrings {
   @override String get language => 'Язык';
   @override String get licenses => 'Авторские права';
   @override String get privacyTerms => 'Конфиденциальность';
-  @override String get pushedButtonTimes => 'Вы нажимали эту кнопку столько раз:';
+  @override String get pushedButtonTimes => 'Вы нажимали эту \'кнопку\'\nстолько раз:';
   @override String get rateApp => 'Оценить приложение';
   @override String get termsOfUse => 'Terms of Use';
   @override String get withHash => '# это символ решетки';
