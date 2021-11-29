@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+# Based on:
 # https://birju.dev/posts/publish-your-flutter-package-using-github-actions/
 
 # This script creates/updates credentials.json file which is used
@@ -26,6 +27,8 @@ if [ -z "${PUB_DEV_PUBLISH_EXPIRATION}" ]; then
   echo "Missing PUB_DEV_PUBLISH_EXPIRATION environment variable"
   exit 1
 fi
+
+mkdir -p ~/.pub-cache
 
 # Create credentials.json file.
 cat <<EOF > ~/.pub-cache/credentials.json

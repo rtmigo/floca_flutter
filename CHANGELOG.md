@@ -1,4 +1,4 @@
-## 0.1.5+9
+## 0.1.5+10
 
 - Fixed a problem with special characters or line breaks inside text constants
 
