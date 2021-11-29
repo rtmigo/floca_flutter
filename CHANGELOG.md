@@ -1,6 +1,6 @@
 ## 0.1.5+3
 
-- The line break characters inside string constants will be escaped
+- Fixed a problem with special characters or line breaks inside text constants
 
 ## 0.1.4
 
