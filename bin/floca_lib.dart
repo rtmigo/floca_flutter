@@ -152,7 +152,7 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   outLine('const supportedLocales = <Locale>[');
   for (var locale in parsed.locales) {
     outLine(
-        '    Locale.fromSubtags(languageCode: ${locale.languageCode.quoted}, scriptCode: ${locale.scriptCode?.quoted}, countryCode: ${locale.countryCode?.quoted}),');
+        '    Locale.fromSubtags(languageCode: ${locale.languageCode.singleQuoted}, scriptCode: ${locale.scriptCode?.singleQuoted}, countryCode: ${locale.countryCode?.singleQuoted}),');
   }
   outLine('  ];');
 
@@ -171,7 +171,7 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
     outLine('class ${langToClassname(lang)} implements FlocaStrings {');
 
     for (var p in parsed.properties) {
-      final dartString = parsed.text(lang, p, tryOtherLocales: tryOtherLocales).replaceAll('\$', '\\\$').quoted;
+      final dartString = parsed.text(lang, p, tryOtherLocales: tryOtherLocales).replaceAll('\$', '\\\$').singleQuoted;
       outLine('  @override String get $p => $dartString;');
     }
 
@@ -186,7 +186,7 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   outLine('  Future<FlocaStrings> load(Locale locale) async {');
   outLine('    switch (locale.toLanguageTag()) {');
   for (var locale in parsed.locales.skip(1)) {
-    outLine('      case ${locale.toLanguageTag().quoted}: return ${langToClassname(locale)}();');
+    outLine('      case ${locale.toLanguageTag().singleQuoted}: return ${langToClassname(locale)}();');
   }
   outLine('      default: return ${langToClassname(parsed.locales.first)}();');
   outLine('    }');

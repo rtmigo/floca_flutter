@@ -1,31 +1,21 @@
+import 'dart:convert';
 
 extension StringExt on String {
-  String get quoted {
-    return "'" + this.escaped + "'";
-  }
+  String get singleQuoted {
+    // quick-and-dirty!
 
-  String get escaped {
-    final sb = StringBuffer();
-    for (final c in this.codeUnits) {
-      // todo backslash after backslash
-      switch (c) {
-        case 9:
-          sb.write('\\t');
-          break;
-        case 10:
-          sb.write('\\n');
-          break;
-        case 13:
-          sb.write('\\r');
-          break;
-        case 39:
-          sb.write(r"\'");
-          break;
-
-        default:
-          sb.write(String.fromCharCode(c));
-      }
-    }
-    return sb.toString();
+    const singleQuoteReplacement = 'f118a27f0b3545bdb4fbc3420bc1a177';
+    // replacing single quotes with special sequence
+    String text = this.replaceAll(RegExp(r"'"), singleQuoteReplacement);
+    // getting the string in double quotes
+    text = jsonEncode(text);
+    assert(text[0] == '"');
+    // getting string contents (without quotes)
+    text = text.substring(1, text.length - 1);
+    // placing single quotes back
+    text = text.replaceAll(RegExp(singleQuoteReplacement), r"\'");
+    // placing string in single quotes
+    text = "'" + text + "'";
+    return text;
   }
 }
