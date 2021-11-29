@@ -94,17 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
-      - name: Install dependencies
-        run: flutter pub get
-      - name: Format
-        run: dart format .
-      - name: Analyze
-        run: flutter analyze --fatal-infos
+      - uses: dart-lang/setup-dart@v1
 
-      - name: Setup credentials
+      - name: Setup PubDev credentials
         # data from cat ~/.pub-cache/credentials.json
         run: |
           mkdir -p ~/.pub-cache
@@ -117,5 +109,53 @@ jobs:
             "expiration": 1570721159347
           }
           EOF
-      - name: Publish
-        run: pub publish -f
+      - name:  Patching 'README.md' for PubDev instead of GitHub
+        run:
+          .github/patch_readme_for_pubdev.sh
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Reformat code
+        run: dart format .
+
+      - name: Analyze reformatted
+        run: dart analyze lib --fatal-infos
+
+#      - name: Unit-tests for reformatted code
+#        run: dart test
+
+      - name: Publish package
+        run:
+          #pub publish --dry-run
+          pub publish -f
+
+#    needs: to-master
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: subosito/flutter-action@v1
+#        with:
+#          channel: 'stable'
+#      - name: Install dependencies
+#        run: flutter pub get
+#      - name: Format
+#        run: dart format .
+#      - name: Analyze
+#        run: flutter analyze --fatal-infos
+#
+#      - name: Setup credentials
+#        # data from cat ~/.pub-cache/credentials.json
+#        run: |
+#          mkdir -p ~/.pub-cache
+#          cat <<EOF > ~/.pub-cache/credentials.json
+#          {
+#            "accessToken":"${{ secrets.PUBDEV_ACCESS_TOKEN }}",
+#            "refreshToken":"${{ secrets.PUBDEV_REFRESH_TOKEN }}",
+#            "tokenEndpoint":"https://accounts.google.com/o/oauth2/token",
+#            "scopes": [ "openid", "https://www.googleapis.com/auth/userinfo.email" ],
+#            "expiration": 1570721159347
+#          }
+#          EOF
+#      - name: Publish
+#        run: pub publish -f
