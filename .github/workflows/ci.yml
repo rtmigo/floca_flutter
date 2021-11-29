@@ -118,4 +118,4 @@ jobs:
           }
           EOF
       - name: Publish
-        run: flutter pub pub publish --force
+        run: pub publish -f
