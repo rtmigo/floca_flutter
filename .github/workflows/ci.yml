@@ -141,7 +141,7 @@ jobs:
         run: flutter pub get
 
       - name: Patching readme.md
-        run: ./remove_readme_badges.sh
+        run: ./.github/remove_readme_badges.sh
 
       - name: Format
         run: dart format .
@@ -156,8 +156,7 @@ jobs:
           PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
           PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
           PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
-        run: |
-          sh ./pubdev_set_credentials.sh
+        run: ./.github/pubdev_set_credentials.sh
 
       - name: Publish
         run: pub publish -f
