@@ -26,14 +26,14 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
+      - name: Install Rosetta on MacOS
+        # preventing shared.sh: line 225: dart-sdk/bin/dart: Bad CPU type in executable
+        if: matrix.os=='macos-latest'
+        run: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
       - uses: subosito/flutter-action@v1
         with:
           #flutter-version: '2.0.3'
           channel: 'stable'
-      - name: Install Rosetta
-        # preventing shared.sh: line 225: dart-sdk/bin/dart: Bad CPU type in executable
-        if: matrix.os=='macos-latest'
-        run: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
       - name: Install dependencies
         run: flutter pub get
       - name: Run tests
