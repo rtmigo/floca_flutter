@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   csv: ^5.0.0
-  flutter_lints: any
+  flutter_lints: ^2.0.1
 
 dev_dependencies:
   test: any
