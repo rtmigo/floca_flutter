@@ -30,7 +30,6 @@ jobs:
         with:
           #flutter-version: '2.0.3'
           channel: 'stable'
-
       - name: Install Rosetta
         # preventing shared.sh: line 225: dart-sdk/bin/dart: Bad CPU type in executable
         /usr/sbin/softwareupdate --install-rosetta --agree-to-license
