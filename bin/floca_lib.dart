@@ -163,7 +163,7 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   }
   outLine('}');
 
-  String langToClassname(Locale lang) => 'FlocaStrings' + localeToTitleCase(lang);
+  String langToClassname(Locale lang) => 'FlocaStrings${localeToTitleCase(lang)}';
 
   for (var lang in parsed.locales) {
     outLine();
