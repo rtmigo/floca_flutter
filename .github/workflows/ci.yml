@@ -54,13 +54,13 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - name: Install dependencies
         run: flutter pub get
-        if: matrix.os == 'macos-latest'
+        #if: matrix.os == 'macos-latest'
       - name: Analyze
         run: flutter analyze --fatal-infos
       - name: Publish (dry run)
