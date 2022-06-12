@@ -1,5 +1,3 @@
-# https://github.com/dart-lang/setup-dart
-
 name: test-and-merge
 
 on:
@@ -116,17 +114,21 @@ jobs:
       - name: Analyze
         run: flutter analyze --fatal-infos
 
-      - name: Setup Pub Credentials
+      - name: Save PubDev Credentials to file
+        run: |
+          echo $JSON > $PUB_CACHE/credentials.json
         shell: bash
         env:
-          PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
-          PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
-          PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
-          PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
-        run: ./.github/pubdev_set_credentials.sh
+          JSON: ${{secrets.PUBDEV_CREDENTIALS_JSON}}
+
+#      - name: Setup Pub Credentials
+#        shell: bash
+#        env:
+#          PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
+#          PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
+#          PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
+#          PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
+#        run: ./.github/pubdev_set_credentials.sh
 
       - name: Publish
-        # 2021-11: Почему-то эта команда продолжает требовать аутентификации,
-        # хотя аналогичная версия dart работает...
-        #run: flutter pub pub publish -f
-        run: flutter pub publish -f
+        run: flutter pub pub publish -f
