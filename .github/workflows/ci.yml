@@ -1,5 +1,3 @@
-# https://github.com/dart-lang/setup-dart
-
 name: test-and-merge
 
 on:
@@ -93,7 +91,7 @@ jobs:
   to-pubdev:
     timeout-minutes: 9
     if: github.event.head_commit.message=='publish'
-    #needs: [to-staging]
+    needs: [to-staging]
 
     runs-on: ubuntu-latest
     steps:
@@ -107,18 +105,17 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-#      - name: Patching readme.md
-#        run: ./.github/remove_readme_badges.sh
-#
-#      - name: Format
-#        run: dart format .
-#
-#      - name: Analyze
-#        run: flutter analyze --fatal-infos
+      - name: Patching readme.md
+        run: ./.github/remove_readme_badges.sh
+
+      - name: Format
+        run: dart format .
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
 
       - name: Save PubDev Credentials to file
         run: |
-          #echo $JSON > ~/.config/dart/pub-credentials.json
           echo $JSON > $PUB_CACHE/credentials.json
         shell: bash
         env:
@@ -134,8 +131,4 @@ jobs:
 #        run: ./.github/pubdev_set_credentials.sh
 
       - name: Publish
-        # 2021-11: Почему-то эта команда продолжает требовать аутентификации,
-        # хотя аналогичная версия dart работает...
-        run: flutter pub pub publish --dry-run
-        #run: flutter pub pub publish -f
-        #run: flutter pub publish -f
+        run: flutter pub pub publish -f
