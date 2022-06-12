@@ -118,8 +118,7 @@ jobs:
 
       - name: Save PubDev Credentials to file
         run: |
-          echo $JSON >> ~/.config/dart/pub-credentials.json
-          cat src/.env
+          echo $JSON > ~/.config/dart/pub-credentials.json
         shell: bash
         env:
           JSON: ${{secrets.PUBDEV_CREDENTIALS_JSON}}
