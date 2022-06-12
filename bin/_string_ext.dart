@@ -15,7 +15,7 @@ extension StringExt on String {
     // placing single quotes back (now prefixed by backslashes)
     text = text.replaceAll(RegExp(singleQuoteReplacement), r"\'");
     // placing string in single quotes
-    text = "'" + text + "'";
+    text = "'$text'";
     return text;
   }
 }

@@ -1,3 +1,8 @@
+## 0.1.6+12
+
+- Added `GlobalCupertinoLocalizations.delegate` to the generated `localizationsDelegates`
+
+
 ## 0.1.5+11
 
 - Fixed a problem with special characters or line breaks inside text constants
