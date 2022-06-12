@@ -129,4 +129,4 @@ jobs:
         # 2021-11: Почему-то эта команда продолжает требовать аутентификации,
         # хотя аналогичная версия dart работает...
         #run: flutter pub pub publish -f
-        pub publish -f
+        run: pub publish -f
