@@ -1,6 +1,6 @@
 # default set of lint rules enforced for projects at Google
 # https://github.com/dart-lang/pedantic#enabled-lints
-include: package:pedantic/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 # http://dart-lang.github.io/linter/lints
 linter:
@@ -8,8 +8,12 @@ linter:
     omit_local_variable_types: false
     unnecessary_this: false
     await_only_futures: true
+    avoid_print: false
 
 analyzer:
-#   exclude:
-#     - path/to/excluded/files/**
+   exclude:
+     - example/**
+   language:
+     strict-casts: true
+     strict-raw-types: true
 

@@ -36,7 +36,7 @@ Iterable<Map<String, String>> dictReader(File csvFile) sync* {
     final result = <String, String>{};
 
     for (int i = 0; i < columnNames.length; ++i) {
-      result[columnNames[i]] = (i < row.length) ? row[i] : '';
+      result[columnNames[i]] = (i < row.length) ? row[i] as String : '';
     }
 
     yield result;
@@ -163,7 +163,7 @@ void csvFileToDartFile(File csvFile, File dartFile, {bool tryOtherLocales = fals
   }
   outLine('}');
 
-  String langToClassname(Locale lang) => 'FlocaStrings' + localeToTitleCase(lang);
+  String langToClassname(Locale lang) => 'FlocaStrings${localeToTitleCase(lang)}';
 
   for (var lang in parsed.locales) {
     outLine();
@@ -211,6 +211,7 @@ extension FlocaBuildContextExt on BuildContext
 const localizationsDelegates = <LocalizationsDelegate<dynamic>> [
   FlocaDelegate(),
   GlobalMaterialLocalizations.delegate,
+  GlobalCupertinoLocalizations.delegate,
   GlobalWidgetsLocalizations.delegate
 ];  
   ''');
