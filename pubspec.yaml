@@ -1,7 +1,7 @@
 name: floca
 description: Library for Flutter app localization. Generates Dart code with string constants, ready to plug into MaterialApp.
 repository: https://github.com/rtmigo/floca_flutter
-version: 0.1.6+14
+version: 0.1.6+15
 
 
 environment:
