@@ -1,4 +1,4 @@
-## 0.1.6+13
+## 0.1.6+15
 
 - Added `GlobalCupertinoLocalizations.delegate` to the generated `localizationsDelegates`
 
